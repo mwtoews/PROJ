@@ -2,17 +2,7 @@
 
 # set -e
 
-UNAME="$(uname)" || UNAME=""
-if test "x${NPROC}" = "x"; then
-    if test "${UNAME}" = "Linux" ; then
-        NPROC=$(nproc);
-    elif test "${UNAME}" = "Darwin" ; then
-        NPROC=$(sysctl -n hw.ncpu);
-    fi
-    if test "x${NPROC}" = "x"; then
-        NPROC=2;
-    fi
-fi
+NPROC=2
 echo "NPROC=${NPROC}"
 export MAKEFLAGS="-j ${NPROC}"
 
@@ -20,7 +10,7 @@ export MAKEFLAGS="-j ${NPROC}"
 if command -v ccache &> /dev/null
 then
     USE_CCACHE=ON
-    ccache -s
+    ccache -s -v
 else
     USE_CCACHE=OFF
 fi
@@ -39,7 +29,7 @@ TAR_FILENAME=$(ls *.tar.gz)
 TAR_DIRECTORY=$(basename $TAR_FILENAME .tar.gz)
 mkdir ../build_from_dist
 cd ../build_from_dist
-tar xvzf ../build_dist/$TAR_FILENAME
+tar xzf ../build_dist/$TAR_FILENAME
 
 # There's a nasty #define CS in a Solaris system header. Avoid being caught about that again
 CXXFLAGS="-DCS=do_not_use_CS_for_solaris_compat $CXXFLAGS"
@@ -96,3 +86,7 @@ otool -l /tmp/proj_static_install_from_dist/bin/projinfo
 
 $TRAVIS_BUILD_DIR/test/postinstall/test_cmake.sh /tmp/proj_static_install_from_dist static
 $TRAVIS_BUILD_DIR/test/postinstall/test_autotools.sh /tmp/proj_static_install_from_dist static
+
+if [ "${USE_CCACHE}" = "ON" ]; then
+    ccache -s -v
+fi
