@@ -2,6 +2,10 @@
 
 option(USE_EXTERNAL_GTEST "Compile against external GTest" OFF)
 
+cmake_policy(GET CMP0042 IS0042)
+message(STATUS "IS0042: ${IS0042}")
+message(STATUS "CMAKE_MACOSX_RPATH: ${CMAKE_MACOSX_RPATH}")
+
 if(USE_EXTERNAL_GTEST)
 
 message(STATUS "Using external GTest")

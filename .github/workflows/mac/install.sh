@@ -2,12 +2,12 @@
 
 set -e
 
-export CCACHE_CPP2=yes
 export PROJ_DB_CACHE_DIR="$HOME/.ccache"
 
+echo "CCACHE_DIR=${CCACHE_DIR}"
 ccache -M 200M
-ccache -s
 
-CC="ccache clang" CXX="ccache clang++" CFLAGS="-Werror -O2" CXXFLAGS="-Werror -O2" ./travis/install.sh
+CC="clang" CXX="clang++" CMAKE_BUILD_TYPE=RelWithDebInfo ./travis/install.sh
 
-ccache -s
+echo "CCACHE_DIR=${CCACHE_DIR}"
+
