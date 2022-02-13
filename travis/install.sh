@@ -73,6 +73,17 @@ fi
 ctest
 make install
 # find /tmp/proj_shared_install_from_dist
+if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+  echo "otool -l libproj"
+  otool -l /tmp/proj_shared_install_from_dist/lib/libproj.22.2.1.dylib
+  echo "otool -L libproj"
+  otool -L /tmp/proj_shared_install_from_dist/lib/libproj.22.2.1.dylib
+  echo "otool -l proj"
+  otool -l /tmp/proj_shared_install_from_dist/bin/proj
+  echo "otool -L proj"
+  otool -L /tmp/proj_shared_install_from_dist/bin/proj
+fi
+
 $TRAVIS_BUILD_DIR/test/postinstall/test_cmake.sh /tmp/proj_shared_install_from_dist shared
 $TRAVIS_BUILD_DIR/test/postinstall/test_autotools.sh /tmp/proj_shared_install_from_dist shared
 
