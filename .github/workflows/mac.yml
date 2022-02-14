@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v2
         id: cache
         with:
-          path: ~/.ccache
+          path: ${{ github.workspace }}/.ccache
           key: ${{ runner.os }}-cache-mac-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-cache-mac-
 
@@ -37,3 +37,4 @@ jobs:
         env:
             TRAVIS_OS_NAME: osx
             BUILD_NAME: osx
+            CCACHE_DIR: ${{ github.workspace }}/.ccache

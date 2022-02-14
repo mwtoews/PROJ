@@ -20,7 +20,7 @@ export MAKEFLAGS="-j ${NPROC}"
 if command -v ccache &> /dev/null
 then
     USE_CCACHE=ON
-    ccache -s
+    ccache -s -v
 else
     USE_CCACHE=OFF
 fi
@@ -60,6 +60,9 @@ cmake \
   -D CMAKE_INSTALL_PREFIX=/tmp/proj_shared_install_from_dist \
   ..
 make
+
+ccache -s -v
+exit 0
 
 if [ "$(uname)" == "Linux" -a -f lib/libproj.so ]; then
 if objdump -TC "lib/libproj.so" | grep "elf64-x86-64">/dev/null; then
@@ -240,5 +243,5 @@ if [ "$BUILD_NAME" != "linux_gcc8" -a "$BUILD_NAME" != "linux_gcc_32bit" ]; then
 fi
 
 if [ "${USE_CCACHE}" = "ON" ]; then
-    ccache -s
+    ccache -s -v
 fi
